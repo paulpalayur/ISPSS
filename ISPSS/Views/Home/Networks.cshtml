@@ -14,13 +14,13 @@
     </div>
 </form>
 
-    @if (Model != null)
+    @if (Model?.AwsRegion != null)
     {
         <div class="border p-4 mt-1">
             <pre><code>
 Privilege Cloud Requirements
 =============================
-vault-@(Model.domain).privilegecloud.cyberark.cloud:<b>1858</b>
+vault-@(Model.domain).privilegecloud.cyberark.cloud:1858
 @(Model.IdentityTenantId).id.cyberark.cloud:443
 connector-@(Model.domain).privilegecloud.cyberark.cloud:443
 console.privilegecloud.cyberark.cloud:443
@@ -62,7 +62,7 @@ Optional Rules
 The following rules are optional, they are used to gather the public egress IP and to update the Connector Management Pre-Requisites Script.
 
 ipinfo.io:80
-raw.githubusercontent.com:443";
+raw.githubusercontent.com:443
                     </code>
             </pre>
         </div>
