@@ -36,6 +36,11 @@ namespace ISPSS.Controllers
         [HttpPost]
         public async Task<IActionResult> Networks(Subdomain obj)
         {
+            if (obj.domain.Contains('.')) {
+                ModelState.AddModelError("", "Not a valid subdomain. Subdomain should not contain '.'");
+            }
+
+            
             IPAddress[] addresses = [];
             if (obj.domain != null)
             {
@@ -47,9 +52,10 @@ namespace ISPSS.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return RedirectToAction("Networks");
+                    ModelState.AddModelError("", "Not a valid ISPSS subdomain.");
+                    return View(); 
                 }
-                
+
                 string awsRegion = string.Empty;
 
 
@@ -78,10 +84,9 @@ namespace ISPSS.Controllers
                     obj.IdentityPodId = IdentityPODId.Result;
 
                     ViewData["IdentityURL"] = identityUrl.Result;
-                    ViewData["IdentityTenantID"] = IdentityTenantId; 
+                    ViewData["IdentityTenantID"] = IdentityTenantId;
                 }
             }
-            
 
             return View(obj);
         }

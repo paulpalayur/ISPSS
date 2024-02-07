@@ -6,7 +6,7 @@ namespace ISPSS.Models
     public class Subdomain
     {
         [Required]
-        [DisplayName("Enter your tenant subdomain")]
+        [DisplayName("Subdomain")]
         public string domain { get; set; }
         public string IdentityTenantId { get; set; }
         public string AwsRegion { get; set; }
