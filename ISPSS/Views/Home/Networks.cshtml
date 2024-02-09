@@ -29,15 +29,22 @@
 
 @section Scripts{
     @{
-    <partial name="_ValidationScriptsPartial" />
-    }
+        <partial name="_ValidationScriptsPartial" />
+        <script type="text/javascript" src="@Url.Content("~/js/clipboardcopy.js")"></script>
+    }    
 }
 
 
     @if (Model?.AwsRegion != null)
     {
-        <div class="border p-4 mt-1">
-            <pre><code>
+    
+    <div class="border p-3 mt-1" id="requirements">
+        <div class="mt-0 fs-4" style="position: relative;float: right;display: block;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Copy">
+            <i class="bi bi-clipboard " data-clipboard-target="#requirements"></i>
+            <i class="bi bi-clipboard-check-fill" style="display:none"></i>
+        </div>
+            <pre>
+                <code>
 Privilege Cloud Requirements
 =============================
 vault-@(Model.domain).privilegecloud.cyberark.cloud:1858
@@ -82,8 +89,8 @@ Dynamic Privilege Access outbound
 cms-assets-bucket-445444212982.s3.amazonaws.com:443
 cms-assets-bucket-445444212982-@(Model.AwsRegion).s3.@(Model.AwsRegion).amazonaws.com:443
 @(Model.AwsRegion).bc.be-privilege-access.cyberark.cloud:443
-@(Model.domain).dpa.cyberark.cloud
-a2m4b3cupk8nzj-ats.iot.@(Model.AwsRegion).amazonaws.com
+@(Model.domain).dpa.cyberark.cloud:443
+a2m4b3cupk8nzj-ats.iot.@(Model.AwsRegion).amazonaws.com:443
 
 Dynamic Privilege Access outbound from client (user) machines
 =============================================================
@@ -109,12 +116,11 @@ To K8S targets:443
 
 Optional Rules
 ===============
-The following rules are optional, they are used to gather the public egress IP and to update the Connector Management Pre-Requisites Script.
+The following rule is optional, it is used to gather the public egress IP.
 
 ipinfo.io:80
-raw.githubusercontent.com:443
-                    </code>
-            </pre>
+                </code>
+            </pre>        
         </div>
     }
     
