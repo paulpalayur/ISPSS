@@ -1,0 +1,31 @@
+name: Docker Image publish for GHCR
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+on:  
+  push:
+    branches: [ "master" ]
+    # Publish semver tags as releases.
+    #tags: [ 'v*.*.*' ]
+  #pull_request:
+    #branches: [ "master" ]
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build and push the image
+        run: |
+          docker login --username ${{ vars.username }} --password ${{ secrets.GHCR_ACCESSTOKEN }}
+          docker build . --tag ghcr.io/${{ vars.username }}/ispss:latest
+          docker push ghcr.io/${{ vars.username }}/ispss:latest
