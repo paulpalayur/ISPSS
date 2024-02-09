@@ -29,3 +29,9 @@ jobs:
           docker login --username ${{ vars.username }} --password ${{ secrets.GHCR_ACCESSTOKEN }} ghcr.io
           docker build -f ./ISPSS/Dockerfile --tag ghcr.io/${{ vars.username }}/ispss:latest .
           docker push ghcr.io/${{ vars.username }}/ispss:latest
+          docker logout
+          docker login --username ${{ secrets.DOCKERHUB_USER }} --password ${{ secrets.DOCKER_KEY }}
+          docker build -f ./ISPSS/Dockerfile --tag sydneyphoenix007/${{ secrets.DOCKERHUB_USER }}/ispss:latest .
+          docker push sydneyphoenix007/${{ secrets.DOCKERHUB_USER }}/ispss:latest
+          docker logout
+          
