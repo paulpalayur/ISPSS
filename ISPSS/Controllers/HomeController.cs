@@ -65,7 +65,7 @@ namespace ISPSS.Controllers
                     string ip = addresses[0].ToString();
                     // Do something with the IP address
                     ViewData["IP"] = ip;
-                    awsregionobj = new AwsRegionResolverService("Misc/ip.json");
+                    awsregionobj = new AwsRegionResolverService("Misc/ip-ranges.json");
                     awsRegion = awsregionobj.GetAwsRegionByIpAddress(ip);
                     obj.AwsRegion = awsRegion;
                     ViewData["region"] = awsRegion;

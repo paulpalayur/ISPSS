@@ -7,7 +7,10 @@ EXPOSE 8081
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
+RUN apt-get update && \
+    apt-get install -y wget
 WORKDIR /src
+RUN wget https://ip-ranges.amazonaws.com/ip-ranges.json
 COPY ["ISPSS/ISPSS.csproj", "ISPSS/"]
 RUN dotnet restore "./ISPSS/./ISPSS.csproj"
 COPY . .
@@ -20,5 +23,6 @@ RUN dotnet publish "./ISPSS.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:U
 
 FROM base AS final
 WORKDIR /app
+COPY --from=build /src/ip-ranges.json /app/Misc/
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "ISPSS.dll"]
