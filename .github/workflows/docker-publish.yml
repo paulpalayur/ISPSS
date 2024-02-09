@@ -26,6 +26,6 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build and push the image
         run: |
-          docker login --username ${{ vars.username }} --password ${{ secrets.GHCR_ACCESSTOKEN }}
+          docker login --username ${{ vars.username }} --password-stdin ${{ secrets.GHCR_ACCESSTOKEN }} ghcr.io
           docker build . --tag ghcr.io/${{ vars.username }}/ispss:latest
           docker push ghcr.io/${{ vars.username }}/ispss:latest
