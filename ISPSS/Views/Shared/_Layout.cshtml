@@ -25,9 +25,9 @@
                         @* <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Networks">Networks</a>
                         </li> *@
-                        <li class="nav-item">
+                        @* <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Disclaimer</a>
-                        </li>
+                        </li> *@
                     </ul>
                 </div>
             </div>
@@ -41,7 +41,20 @@
 
     <footer class="border-top footer bg-primary text-muted">
         <div class="container">
-            &copy; 2024 - ISPSS - <a asp-area="" asp-controller="Home" asp-action="Privacy">Disclaimer</a>
+            <ul class="navbar-nav flex-row flex-wrap bd-navbar-nav">
+                <li class="p-1">
+                    <a href="https://github.com/paulpalayur/ISPSS" class="text-decoration-none text-light" target="_blank">
+                        &copy; 2024 - ISPSS <i class="bi bi-github"></i>
+                    </a>
+                </li>
+                <li class="col-lg-auto mt-4">
+                    <div class="vr d-none d-lg-flex h-50 mx-lg-2 text-white"></div>
+                    <hr class="d-lg-none my-5 text-white-50">
+                </li>                
+                <li class="mt-1">
+                    <a class="text-light mt-1" asp-controller="Home" asp-action="Privacy">Disclaimer</a>
+                </li>
+            </ul>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

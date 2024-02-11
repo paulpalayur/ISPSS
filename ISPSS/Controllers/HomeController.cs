@@ -37,9 +37,9 @@ namespace ISPSS.Controllers
         public async Task<IActionResult> Networks(Subdomain obj)
         {
             if (obj.domain.Contains('.')) {
-                ModelState.AddModelError("", "Not a valid subdomain. Subdomain should not contain '.'");
+                ModelState.AddModelError("", "Subdomain should not contain '.'");
+                return View();
             }
-
             
             IPAddress[] addresses = [];
             if (obj.domain != null)
@@ -58,12 +58,9 @@ namespace ISPSS.Controllers
 
                 string awsRegion = string.Empty;
 
-
-
                 if (addresses.Length > 0)
                 {
-                    string ip = addresses[0].ToString();
-                    // Do something with the IP address
+                    string ip = addresses[0].ToString();                    
                     ViewData["IP"] = ip;
                     awsregionobj = new AwsRegionResolverService("Misc/ip-ranges.json");
                     awsRegion = awsregionobj.GetAwsRegionByIpAddress(ip);
@@ -94,6 +91,15 @@ namespace ISPSS.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+        [HttpPost]
+        public IActionResult DownloadFile(string content) {
+            
+            byte[] fileContents = System.Text.Encoding.UTF8.GetBytes(content);
+            string fileName = "ISP_Networks.txt";            
+            string contentType = "text/plain";
+            
+            return File(fileContents, contentType, fileName);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
