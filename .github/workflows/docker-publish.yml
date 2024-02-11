@@ -27,12 +27,12 @@ jobs:
       - name: Build and push the image
         run: |
           docker login --username ${{ vars.username }} --password ${{ secrets.GHCR_ACCESSTOKEN }} ghcr.io
-          docker build -f ./ISPSS/Dockerfile --tag ghcr.io/${{ vars.username }}/ispss:latest .
+          docker build -f ./ISPSS/Dockerfile -t ghcr.io/${{ vars.username }}/ispss:latest -t ghcr.io/${{ vars.username }}/ispss:${{ vars.MAJOR }}.${{ vars.MINOR }} .
           docker push ghcr.io/${{ vars.username }}/ispss:latest
           docker push ghcr.io/${{ vars.username }}/ispss:${{ vars.MAJOR }}.${{ vars.MINOR }}
           docker logout
-          docker login --username ${{ vars.DOCKERHUB_USER }} --password ${{ secrets.DOCKER_KEY }}
-          docker build -f ./ISPSS/Dockerfile --tag ${{ vars.DOCKERHUB_USER }}/ispss:latest .
+          docker login --username ${{ vars.DOCKERHUB_USER }} --password ${{ secrets.DOCKER_KEY }}          
+          docker build -f ./ISPSS/Dockerfile -t ${{ vars.DOCKERHUB_USER }}/ispss:latest -t ${{ vars.DOCKERHUB_USER }}/ispss:${{ vars.MAJOR }}.${{ vars.MINOR }} .
           docker push ${{ vars.DOCKERHUB_USER }}/ispss:latest
           docker push ${{ vars.DOCKERHUB_USER }}/ispss:${{ vars.MAJOR }}.${{ vars.MINOR }}
           docker logout
