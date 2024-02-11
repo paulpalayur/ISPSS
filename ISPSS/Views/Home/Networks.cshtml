@@ -3,24 +3,25 @@
 <form method="post">    
     <div class="border p-2 mt-4">
         <div class="form-group">
+            <div asp-validation-summary="ModelOnly" class="alert alert-dismissible alert-danger">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
             <div class="row">
-                <div asp-validation-summary="ModelOnly" class="alert-danger"></div>
+                
                 <div class="col-9">
-                    <label class="p-0">Enter your tenant subdomain</label>
+                    <label class="p-0">Enter your tenant subdomain to find the network requirements</label>
                     <div class="input-group mb-2">
                         <span class="input-group-text">https://</span>
                         <div class="form-floating">                            
                             <input type="text" class="form-control" id="floatingdomain" placeholder="Subdomain" asp-for="domain">
-                            <label class="col-5 col-sm-4" for="floatingdomain">Subdomain</label>
+                            <label class="" for="floatingdomain">Subdomain</label>
                         </div>
                         <span class="input-group-text">.cyberark.cloud</span>
                     </div>
                     <span asp-validation-for="domain" class="text-danger"></span>
                 </div>
-                <div class="col-3 mt-4 p-1">
-                    <div class="">
-                        <button type="submit" class="btn btn-primary">Search</button>
-                    </div>
+                <div class="col-3 mt-4 p-1">                    
+                        <button type="submit" class="btn btn-primary">Search</button>                    
                 </div>
             </div>
         </div>
@@ -31,6 +32,7 @@
     @{
         <partial name="_ValidationScriptsPartial" />
         <script type="text/javascript" src="@Url.Content("~/js/clipboardcopy.js")"></script>
+        <script type="text/javascript" src="@Url.Content("~/js/downloadfile.js")"></script>
     }    
 }
 
@@ -38,15 +40,21 @@
     @if (Model?.AwsRegion != null)
     {
     
-    <div class="border p-3 mt-1" id="requirements">
-        <div class="mt-0 fs-4" style="position: relative;float: right;display: block;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Copy">
-            <i class="bi bi-clipboard " data-clipboard-target="#requirements"></i>
-            <i class="bi bi-clipboard-check-fill" style="display:none"></i>
+    <div class="border p-3 mt-1">
+        <div class="mt-0 fs-4">
+            <div class="p-1" style="position: relative;float: right;display: block;">
+                <a class="icon-link-hover"><i class="bi bi-filetype-txt mt-3 DownloadFile"></i></a>
+            </div>
+            <div class="p-1" style="position: relative;float: right;display: block;">
+                <i class="bi bi-clipboard " data-clipboard-target=".requirements"></i>
+                <i class="bi bi-clipboard-check-fill" style="display:none"></i>
+            </div>
+            
         </div>
+        <div class="requirements">
             <pre>
-                <code>
 Privilege Cloud Requirements
-=============================
+============================
 vault-@(Model.domain).privilegecloud.cyberark.cloud:1858
 @(Model.IdentityTenantId).id.cyberark.cloud:443
 connector-@(Model.domain).privilegecloud.cyberark.cloud:443
@@ -57,19 +65,19 @@ webaccess-@(Model.domain).privilegecloud.cyberark.cloud:443
 @(Model.domain).connectormanagement.cyberark.cloud:443
 
 Connector Managment Based on @(Model.AwsRegion)
-=============================================
+===========================================
 connector-management-scripts-490081306957-@(Model.AwsRegion).s3.amazonaws.com:443
 connector-management-assets-490081306957-@(Model.AwsRegion).s3.amazonaws.com:443
 a3vvqcp8z371p3-ats.iot.@(Model.AwsRegion).amazonaws.com:443
 component-registry-store-490081306957.s3.amazonaws.com:443
 
 AWS SSL
-========
+=======
 crt.r2m02.amazontrust.com:80
 ocsp.r2m02.amazontrust.com:80
 
 Identity Connector
-===================
+==================
 This is based on the identity tenant pod being @(Model.IdentityPodId).
 
 @(Model.IdentityPodId)-b1.relay.idaptive.app:443
@@ -119,9 +127,9 @@ Optional Rules
 The following rule is optional, it is used to gather the public egress IP.
 
 ipinfo.io:80
-                </code>
-            </pre>        
+            </pre>
         </div>
+    </div>
     }
     
     
