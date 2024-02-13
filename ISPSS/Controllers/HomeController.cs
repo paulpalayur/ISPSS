@@ -1,6 +1,8 @@
 using ISPSS.Models;
 using ISPSS.Services;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
+
 using System.Diagnostics;
 using System.Net;
 
@@ -35,32 +37,36 @@ namespace ISPSS.Controllers
         }
         [HttpPost]
         public async Task<IActionResult> Networks(Subdomain obj)
-        {
-            if (obj.domain.Contains('.')) {
+        {            
+            if (obj.domain.Contains('.'))
+            {
+                Log.Information($"Subdomain: {obj.domain}");
                 ModelState.AddModelError("", "Subdomain should not contain '.'");
                 return View();
             }
-            
+
             IPAddress[] addresses = [];
             if (obj.domain != null)
             {
                 string subdomain = obj.domain;
                 var ispss_vault_address = $"vault-{subdomain}.privilegecloud.cyberark.cloud";
+                Log.Information($"Subdomain: {obj.domain}");
                 try
                 {
                     addresses = await Dns.GetHostAddressesAsync(ispss_vault_address);
                 }
                 catch (Exception ex)
-                {
+                {                    
+                    Log.Error(ex, $"Subdomain: {obj.domain}");
                     ModelState.AddModelError("", "Not a valid ISPSS subdomain.");
-                    return View(); 
+                    return View();
                 }
 
                 string awsRegion = string.Empty;
 
                 if (addresses.Length > 0)
                 {
-                    string ip = addresses[0].ToString();                    
+                    string ip = addresses[0].ToString();
                     ViewData["IP"] = ip;
                     awsregionobj = new AwsRegionResolverService("Misc/ip-ranges.json");
                     awsRegion = awsregionobj.GetAwsRegionByIpAddress(ip);
@@ -70,6 +76,7 @@ namespace ISPSS.Controllers
                 else
                 {
                     ViewData["IP"] = ("No IP addresses found for the specified host.");
+                    Log.Error($"Subdomain: {obj.domain}. Could not find IP address for the specified subdomain");
                 }
                 identityObj = new Identity(subdomain);
                 await (identityUrl = identityObj.GetFinalRedirection());
@@ -84,7 +91,7 @@ namespace ISPSS.Controllers
                     ViewData["IdentityTenantID"] = IdentityTenantId;
                 }
             }
-
+            Log.Information($"object: {obj}");
             return View(obj);
         }
 
