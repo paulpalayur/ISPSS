@@ -24,8 +24,8 @@ namespace ISPSS.Controllers
         public async Task<IActionResult> Index()
         {
             this.ViewData["Index"] = "TestHome";
-            
 
+            Log.Information($"The source IP is {Request.Headers["X-Forwarded-For"].ToString()}");
 
             return View();
         }
@@ -36,10 +36,12 @@ namespace ISPSS.Controllers
         }
         [HttpPost]
         public async Task<IActionResult> Networks(Subdomain obj)
-        {            
+        {
+            Log.Information($"The source IP is {Request.Headers["X-Forwarded-For"].ToString()}");
             if (obj.domain.Contains('.'))
             {
                 Log.Information($"Subdomain: {obj.domain}");
+                Log.Information($"The source IP is {Request.Headers["X-Forwarded-For"].ToString()}");
                 ModelState.AddModelError("", "Subdomain should not contain '.'");
                 return View();
             }
@@ -49,13 +51,15 @@ namespace ISPSS.Controllers
             {
                 string subdomain = obj.domain;
                 var ispss_vault_address = $"vault-{subdomain}.privilegecloud.cyberark.cloud";
+                Log.Information($"The source IP is {Request.Headers["X-Forwarded-For"].ToString()}");
                 Log.Information($"Subdomain: {obj.domain}");
                 try
                 {
                     addresses = await Dns.GetHostAddressesAsync(ispss_vault_address);
                 }
                 catch (Exception ex)
-                {                    
+                {
+                    Log.Information($"The source IP is {Request.Headers["X-Forwarded-For"].ToString()}");
                     Log.Error(ex, $"Subdomain: {obj.domain}");
                     ModelState.AddModelError("", "Not a valid ISPSS subdomain.");
                     return View();
