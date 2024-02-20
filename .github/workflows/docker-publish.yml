@@ -27,14 +27,14 @@ jobs:
       - name: Build and push the image
         run: |
           docker login --username ${{ vars.username }} --password ${{ secrets.GHCR_ACCESSTOKEN }} ghcr.io
-          docker build -f ./ISPSS/Dockerfile -t ghcr.io/${{ vars.username }}/ispss:latest -t ghcr.io/${{ vars.username }}/ispss:${{ vars.MAJOR }}.${{ vars.MINOR }} .
+          docker build -f ./ISPSS/Dockerfile -t ghcr.io/${{ vars.username }}/ispss:latest -t ghcr.io/${{ vars.username }}/ispss:${{ vars.MAJOR }}.${{ github.run_number }} .
           docker push ghcr.io/${{ vars.username }}/ispss:latest
-          docker push ghcr.io/${{ vars.username }}/ispss:${{ vars.MAJOR }}.${{ vars.MINOR }}
+          docker push ghcr.io/${{ vars.username }}/ispss:${{ vars.MAJOR }}.${{ github.run_number }}
           docker logout
           docker login --username ${{ vars.DOCKERHUB_USER }} --password ${{ secrets.DOCKER_KEY }}          
-          docker build -f ./ISPSS/Dockerfile -t ${{ vars.DOCKERHUB_USER }}/ispss:latest -t ${{ vars.DOCKERHUB_USER }}/ispss:${{ vars.MAJOR }}.${{ vars.MINOR }} .
+          docker build -f ./ISPSS/Dockerfile -t ${{ vars.DOCKERHUB_USER }}/ispss:latest -t ${{ vars.DOCKERHUB_USER }}/ispss:${{ vars.MAJOR }}.${{ github.run_number }} .
           docker push ${{ vars.DOCKERHUB_USER }}/ispss:latest
-          docker push ${{ vars.DOCKERHUB_USER }}/ispss:${{ vars.MAJOR }}.${{ vars.MINOR }}
+          docker push ${{ vars.DOCKERHUB_USER }}/ispss:${{ vars.MAJOR }}.${{ github.run_number }}
           docker logout
       - name: Output Run ID
         run: echo ${{ github.run_id }}
