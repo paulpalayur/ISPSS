@@ -30,7 +30,7 @@ namespace ISPSS.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Networks()        
+        public async Task<IActionResult> Networks()
         {
             return View();
         }
@@ -41,7 +41,7 @@ namespace ISPSS.Controllers
             Log.Information($"The source IP is {remoteIP}");
             if (obj.domain.Contains('.'))
             {
-                Log.Information($"Subdomain: {obj.domain}, Remote IP {remoteIP}");                
+                Log.Information($"Subdomain: {obj.domain}, Remote IP {remoteIP}");
                 ModelState.AddModelError("", "Subdomain should not contain '.'");
                 return View();
             }
@@ -50,7 +50,7 @@ namespace ISPSS.Controllers
             if (obj.domain != null)
             {
                 string subdomain = obj.domain;
-                var ispss_vault_address = $"vault-{subdomain}.privilegecloud.cyberark.cloud";                
+                var ispss_vault_address = $"vault-{subdomain}.privilegecloud.cyberark.cloud";
                 Log.Information($"Subdomain: {obj.domain}, Remote IP {remoteIP}");
                 try
                 {
