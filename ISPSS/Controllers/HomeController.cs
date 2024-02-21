@@ -24,22 +24,24 @@ namespace ISPSS.Controllers
         public async Task<IActionResult> Index()
         {
             this.ViewData["Index"] = "TestHome";
-            
 
+            Log.Information($"The source IP is {Request.Headers["X-Forwarded-For"].ToString()}");
 
             return View();
         }
 
-        public async Task<IActionResult> Networks()        
+        public async Task<IActionResult> Networks()
         {
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> Networks(Subdomain obj)
-        {            
+        {
+            string remoteIP = Request.Headers["X-Forwarded-For"].ToString();
+            Log.Information($"The source IP is {remoteIP}");
             if (obj.domain.Contains('.'))
             {
-                Log.Information($"Subdomain: {obj.domain}");
+                Log.Information($"Subdomain: {obj.domain}, Remote IP {remoteIP}");
                 ModelState.AddModelError("", "Subdomain should not contain '.'");
                 return View();
             }
@@ -49,14 +51,14 @@ namespace ISPSS.Controllers
             {
                 string subdomain = obj.domain;
                 var ispss_vault_address = $"vault-{subdomain}.privilegecloud.cyberark.cloud";
-                Log.Information($"Subdomain: {obj.domain}");
+                Log.Information($"Subdomain: {obj.domain}, Remote IP {remoteIP}");
                 try
                 {
                     addresses = await Dns.GetHostAddressesAsync(ispss_vault_address);
                 }
                 catch (Exception ex)
                 {                    
-                    Log.Error(ex, $"Subdomain: {obj.domain}");
+                    Log.Error(ex, $"Subdomain: {obj.domain}, Remote IP {remoteIP}");
                     ModelState.AddModelError("", "Not a valid ISPSS subdomain.");
                     return View();
                 }
@@ -75,7 +77,7 @@ namespace ISPSS.Controllers
                 else
                 {
                     ViewData["IP"] = ("No IP addresses found for the specified host.");
-                    Log.Error($"Subdomain: {obj.domain}. Could not find IP address for the specified subdomain");
+                    Log.Error($"Subdomain: {obj.domain}, Remote IP {remoteIP} .Could not find IP address for the specified subdomain");
                 }
                 identityObj = new Identity(subdomain);
                 await (identityUrl = identityObj.GetFinalRedirection());
