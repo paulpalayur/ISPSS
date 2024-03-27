@@ -62,6 +62,7 @@ console.privilegecloud.cyberark.cloud:443
 @(Model.domain).cyberark.cloud:443
 @(Model.domain).privilegecloud.cyberark.cloud:443
 webaccess-@(Model.domain).privilegecloud.cyberark.cloud:443
+@(Model.domain).webaccess.cyberark.cloud:443
 @(Model.domain).connectormanagement.cyberark.cloud:443
 
 Connector Management Based on @(Model.AwsRegion)
@@ -103,7 +104,7 @@ a2m4b3cupk8nzj-ats.iot.@(Model.AwsRegion).amazonaws.com:443
 Dynamic Privilege Access outbound from client (user) machines
 =============================================================
 @(Model.domain).ssh.cyberark.cloud:22
-@(Model.domain).rdp.cyberark.cloud:3389
+@(Model.domain).rdp.cyberark.cloud:443/8443
 @(Model.domain).mariadb.cyberark.cloud:3306
 @(Model.domain).mysql.cyberark.cloud:3306
 @(Model.domain).oracle.cyberark.cloud:2484
