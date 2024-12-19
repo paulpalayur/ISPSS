@@ -1,18 +1,18 @@
 ﻿@model Subdomain
 
-<form method="post">    
+<form method="post">
     <div class="border p-2 mt-4">
         <div class="form-group">
             <div asp-validation-summary="ModelOnly" class="alert alert-dismissible alert-danger">
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
             <div class="row">
-                
+
                 <div class="col-9">
                     <label class="p-0">Enter your tenant subdomain to find the network requirements</label>
                     <div class="input-group mb-2">
                         <span class="input-group-text">https://</span>
-                        <div class="form-floating">                            
+                        <div class="form-floating">
                             <input type="text" class="form-control" id="floatingdomain" placeholder="Subdomain" asp-for="domain">
                             <label class="" for="floatingdomain">Subdomain</label>
                         </div>
@@ -20,8 +20,8 @@
                     </div>
                     <span asp-validation-for="domain" class="text-danger"></span>
                 </div>
-                <div class="col-3 mt-4 p-1">                    
-                        <button type="submit" class="btn btn-primary">Search</button>                    
+                <div class="col-3 mt-4 p-1">
+                        <button type="submit" class="btn btn-primary">Search</button>
                 </div>
             </div>
         </div>
@@ -33,13 +33,13 @@
         <partial name="_ValidationScriptsPartial" />
         <script type="text/javascript" src="@Url.Content("~/js/clipboardcopy.js")"></script>
         <script type="text/javascript" src="@Url.Content("~/js/downloadfile.js")"></script>
-    }    
+    }
 }
 
 
     @if (Model?.AwsRegion != null)
     {
-    
+
     <div class="border p-3 mt-1">
         <div class="mt-0 fs-4">
             <div class="p-1" style="position: relative;float: right;display: block;">
@@ -49,7 +49,7 @@
                 <i class="bi bi-clipboard " data-clipboard-target=".requirements"></i>
                 <i class="bi bi-clipboard-check-fill" style="display:none"></i>
             </div>
-            
+
         </div>
         <div class="requirements">
             <pre>
@@ -92,7 +92,7 @@ ocsp.globalsign.com:80
 crl.globalsign.com:80
 secure.globalsign.com:80
 
-Dynamic Privilege Access outbound from the connector server
+Secure Infrastructure Access outbound from the connector server
 ===========================================================
 cms-assets-bucket-445444212982.s3.amazonaws.com:443
 cms-assets-bucket-445444212982-@(Model.AwsRegion).s3.@(Model.AwsRegion).amazonaws.com:443
@@ -100,7 +100,7 @@ cms-assets-bucket-445444212982-@(Model.AwsRegion).s3.@(Model.AwsRegion).amazonaw
 @(Model.domain).dpa.cyberark.cloud:443
 a2m4b3cupk8nzj-ats.iot.@(Model.AwsRegion).amazonaws.com:443
 
-Dynamic Privilege Access outbound from client (user) machines
+Secure Infrastructure Access outbound from client (user) machines
 =============================================================
 @(Model.domain).ssh.cyberark.cloud:22
 @(Model.domain).rdp.cyberark.cloud:443/8443
@@ -113,7 +113,7 @@ Dynamic Privilege Access outbound from client (user) machines
 @(Model.domain).mongodb.cyberark.cloud:27017
 @(Model.domain).k8s.cyberark.cloud:443
 
-Dynamic Privilege Access LAN from connector server to target resources
+Secure Infrastructure Access LAN from connector server to target resources
 ======================================================================
 To Linux targets:22
 To Windows targets:3389,135,445,139
@@ -134,7 +134,7 @@ ipinfo.io:80
 
 References
 ==========
-Outbound traffic network and port requirements: https://docs.cyberark.com/Product-Doc/OnlineHelp/PAS/Latest/en/Content/Integrations/Network-Requirements.htm
+Outbound traffic network and port requirements: https://docs.cyberark.com/ispss-deployment/latest/en/content/deployment/deploy-system-network-req.htm?tocpath=Prepare%20your%20environment%7CSystem%20and%20network%20requirements%7C_____0
 Connector ports and protocols: https://docs.cyberark.com/privilege-cloud-shared-services/latest/en/Content/PAS%20SysReq/Standard%20Ports%20-%20CPM.htm
 Standard Ports used for Accounts Discovery: https://docs.cyberark.com/privilege-cloud-shared-services/latest/en/Content/PAS%20SysReq/Standard%20Ports%20-%20Accounts%20Discovery.htm
             </pre>
